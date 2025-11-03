@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cozy Pomodoro - Centered</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --glass: rgba(255,255,255,0.06);
+    --glass-strong: rgba(255,255,255,0.10);
+    --accent: linear-gradient(145deg,#5e5e5e,#2b2b2b);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Poppins',sans-serif;
+    background: url('Kaohsiung_city_Skyline_at_night.jpg') no-repeat center center fixed;
+    background-size:cover;
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  /* lighter overlay blur */
+  .overlay{
+    position:fixed;inset:0;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(3px);
+    z-index:0;
+  }
+  .page{
+    position:relative;z-index:1;
+    display:flex;
+    gap:40px;
+    align-items:center;
+    justify-content:center;
+    padding:60px;
+    min-height:100vh;
+  }
+  /* left (main) column */
+  .main-col{
+    width:60%;
+    max-width:800px;
+    min-width:320px;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+    align-items:center;
+  }
+  /* right (spotify) column */
+  .side-col{
+    width:30%;
+    min-width:220px;
+    max-width:320px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    align-items:stretch;
+  }
+  /* glass panels */
+  .panel{
+    width:100%;
+    background:var(--glass);
+    backdrop-filter: blur(10px) saturate(120%);
+    border-radius:14px;
+    padding:24px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+  }
+  /* big timer */
+  #time{
+    font-size:5rem;
+    letter-spacing:1px;
+    font-weight:600;
+  }
+  /* controls row */
+  .controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  /* 3D buttons */
+  .btn{
+    padding:10px 16px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    color:white;
+    background: var(--accent);
+    box-shadow: 0 8px 0 rgba(20,20,20,0.7), 0 16px 30px rgba(0,0,0,0.5);
+    transform: translateY(0);
+    transition: transform .12s ease, box-shadow .12s ease;
+    font-weight:600;
+  }
+  .btn:active{ transform: translateY(6px); box-shadow: 0 2px 0 rgba(20,20,20,0.8) }
+  .btn.ghost{ background: rgba(255,255,255,0.08); box-shadow: 0 6px 0 rgba(10,10,10,0.6); }
+  /* to-do styles */
+  .todo-panel .todo-input{ display:flex; gap:10px; width:100%; }
+  .todo-panel input[type="text"]{ flex:1;padding:10px;border-radius:8px;border:none;background:rgba(255,255,255,0.06);color:white }
+  .todo-list{ width:100%; margin-top:8px; display:flex;flex-direction:column; gap:8px; align-items:stretch }
+  .todo-item{ display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:8px 10px; border-radius:8px; background: rgba(255,255,255,0.04); }
+  .todo-item label{ flex:1; cursor:pointer }
+  .todo-item input[type="checkbox"]{ width:18px;height:18px }
+  /* spotify small panel */
+  .spotify-panel{ padding:12px }
+  .spotify-panel iframe{ width:100%; height:320px; border-radius:10px; border:0; }
+  /* explanation below fold (plain text) */
+  .explanation{ margin-top:120vh; padding:60px 20px; color:#f1f1f1; text-align:center; max-width:900px; margin-left:auto; margin-right:auto }
+  @media (max-width:920px){
+    .page{ flex-direction:column; padding:32px }
+    .main-col{ width:100% }
+    .side-col{ width:100%; order:2 }
+    .explanation{ margin-top:20px }
+    #time{ font-size:3.2rem }
+    .spotify-panel iframe{ height:240px }
+  }
+</style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="page">
+    <div class="main-col">
+      <div class="panel timer-panel">
+        <div id="time">25:00</div>
+        <div class="controls">
+          <button class="btn" id="pomodoroBtn">Pomodoro</button>
+          <button class="btn" id="shortBtn">Short Break</button>
+          <button class="btn" id="longBtn">Long Break</button>
+          <button class="btn ghost" id="startBtn">Start</button>
+          <button class="btn ghost" id="pauseBtn">Pause</button>
+          <button class="btn ghost" id="resetBtn">Reset</button>
+        </div>
+      </div>
+
+      <div class="panel todo-panel">
+        <h3 style="margin-bottom:6px">To‑Do</h3>
+        <div class="todo-input">
+          <input id="todoInput" placeholder="Add a task..." />
+          <button class="btn" id="addBtn">Add</button>
+        </div>
+        <div class="todo-list" id="todoList"></div>
+      </div>
+    </div>
+
+    <div class="side-col">
+      <div class="panel spotify-panel">
+        <h4 style="margin-bottom:8px">Lofi Playlist</h4>
+        <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX9RwfGbeGQwP?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="explanation">
+    <p>The Pomodoro Technique is a time management method developed by Francesco Cirillo. It uses a timer to break work into intervals, traditionally 25 minutes in length, separated by short breaks. Each interval is known as a "pomodoro".</p>
+  </div>
+
+<script>
+// Timer logic with modes and pause/resume
+const display = document.getElementById('time');
+const pomodoroBtn = document.getElementById('pomodoroBtn');
+const shortBtn = document.getElementById('shortBtn');
+const longBtn = document.getElementById('longBtn');
+const startBtn = document.getElementById('startBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+const MODES = { pomodoro: 25*60, short: 5*60, long: 15*60 };
+let currentMode = 'pomodoro';
+let timeLeft = MODES[currentMode];
+let intervalId = null;
+let paused = false;
+
+function fmt(t){
+  const m = Math.floor(t/60).toString().padStart(2,'0');
+  const s = (t%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+function render(){
+  display.textContent = fmt(timeLeft);
+}
+
+function setMode(mode){
+  currentMode = mode;
+  timeLeft = MODES[mode];
+  paused = false;
+  clearInterval(intervalId);
+  intervalId = null;
+  render();
+}
+
+pomodoroBtn.onclick = ()=> setMode('pomodoro');
+shortBtn.onclick = ()=> setMode('short');
+longBtn.onclick = ()=> setMode('long');
+
+startBtn.onclick = ()=>{
+  if (intervalId) return;
+  paused = false;
+  pauseBtn.textContent = 'Pause';
+  intervalId = setInterval(()=>{
+    if (!paused && timeLeft>0){
+      timeLeft--;
+      render();
+      if (timeLeft<=0){
+        clearInterval(intervalId);
+        intervalId = null;
+        // simple alert end
+        alert('Time finished!');
+      }
+    }
+  },1000);
+};
+
+pauseBtn.onclick = ()=>{
+  if (!intervalId) return;
+  paused = !paused;
+  pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+};
+
+resetBtn.onclick = ()=>{
+  clearInterval(intervalId);
+  intervalId = null;
+  timeLeft = MODES[currentMode];
+  paused = false;
+  pauseBtn.textContent = 'Pause';
+  render();
+};
+
+render();
+
+// To-do with localStorage
+const todoInput = document.getElementById('todoInput');
+const addBtn = document.getElementById('addBtn');
+const todoList = document.getElementById('todoList');
+let todos = JSON.parse(localStorage.getItem('cp_todos') || '[]');
+
+function saveTodos(){ localStorage.setItem('cp_todos', JSON.stringify(todos)); }
+function renderTodos(){
+  todoList.innerHTML = '';
+  todos.forEach((t,i)=>{
+    const div = document.createElement('div');
+    div.className = 'todo-item';
+    div.innerHTML = `<label><input type="checkbox" data-i="${i}"> ${t}</label>`;
+    todoList.appendChild(div);
+  });
+}
+addBtn.onclick = ()=>{
+  const v = todoInput.value.trim();
+  if (!v) return;
+  todos.push(v);
+  todoInput.value='';
+  saveTodos();
+  renderTodos();
+};
+todoList.addEventListener('change', (e)=>{
+  if (e.target.matches('input[type="checkbox"]')){
+    const i = Number(e.target.getAttribute('data-i'));
+    todos.splice(i,1);
+    saveTodos();
+    renderTodos();
+  }
+});
+renderTodos();
+</script>
+</body>
+</html>
