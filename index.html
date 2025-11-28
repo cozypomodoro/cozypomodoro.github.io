@@ -1,49 +1,167 @@
-import React from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cozy Pomodoro</title>
+  <style>
+    /* RESET */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: url('Kaohsiung_city_Skyline_at_night.jpg') center/cover fixed no-repeat;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
 
-export default function PomodoroPage() {
-  return (
-    <div
-      className="min-h-screen w-full bg-cover bg-center bg-no-repeat text-white"
-      style={{ backgroundImage: "url('Kaohsiung_city_Skyline_at_night.jpg')" }}
-    >
-      {/* Header */}
-      <header className="p-6 flex items-center gap-4">
-        <h1 className="text-3xl font-black tracking-wide bg-black/40 px-4 py-1 rounded-lg">
-          cozypomodoro.github.io
-        </h1>
-      </header>
+    header {
+      padding: 20px;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
-      {/* Widgets container */}
-      <div className="flex flex-col md:flex-row justify-center items-start gap-8 px-6 pb-20">
-        {/* Pomodoro Widget */}
-        <div className="backdrop-blur-sm bg-black/30 rounded-3xl p-6 w-80 flex flex-col items-center shadow-xl">
-          <div className="flex gap-4 mb-4">
-            <button className="px-3 py-1 rounded-md bg-white/20 font-semibold">Pomodoro</button>
-            <button className="px-3 py-1 rounded-md bg-white/10">Short Break</button>
-            <button className="px-3 py-1 rounded-md bg-white/10">Long Break</button>
-          </div>
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
+    }
 
-          <div className="text-7xl font-bold mb-6 tracking-tight">25:00</div>
+    .widget {
+      width: 300px;
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.25);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
 
-          <button className="px-10 py-3 text-lg font-semibold bg-white text-red-700 rounded-xl">
-            START
-          </button>
-        </div>
+    /* Pomodoro top buttons */
+    .mode-select button {
+      background: transparent;
+      border: none;
+      color: #ffdada;
+      font-size: 16px;
+      padding: 5px 12px;
+      margin: 0 4px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .mode-select .active {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
 
-        {/* Two placeholder widgets */}
-        <div className="backdrop-blur-sm bg-black/30 rounded-3xl p-6 w-80 h-64 shadow-xl"></div>
-        <div className="backdrop-blur-sm bg-black/30 rounded-3xl p-6 w-80 h-64 shadow-xl"></div>
+    /* Timer number */
+    .timer-display {
+      font-size: 60px;
+      margin: 20px 0;
+    }
+
+    /* Big START Button */
+    .start-btn {
+      background: white;
+      color: #b14c4c;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Content at bottom */
+    .footer-text {
+      margin-top: 80px;
+      padding: 20px;
+      font-size: 16px;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    small {
+      display: block;
+      margin-top: 5px;
+      font-size: 13px;
+      color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <header>CozyPomodoro</header>
+
+  <div class="container">
+    <div class="widget">
+      <div class="mode-select">
+        <button class="active" onclick="setMode('pomodoro')">Pomodoro</button>
+        <button onclick="setMode('short')">Short Break</button>
+        <button onclick="setMode('long')">Long Break</button>
       </div>
 
-      {/* Footer blurb */}
-      <div className="w-full text-center text-xs text-white/80 pb-6">
-        <p className="max-w-xl mx-auto px-4">
-          The Pomodoro Technique is a time-management method that alternates 25-minute
-          focused work sessions with short and long breaks.
-        </p>
-        <p className="mt-2">Background by Hweehweemalu, Wikimedia Commons</p>
-      </div>
+      <div class="timer-display" id="timer">25:00</div>
+
+      <button class="start-btn" onclick="toggleTimer()" id="startBtn">START</button>
     </div>
-  );
-}
+
+    <div class="widget">Widget 2</div>
+    <div class="widget">Widget 3</div>
+  </div>
+
+  <div class="footer-text">
+    The Pomodoro Technique is a simple productivity system where you work in focused intervals and take small breaks.
+    <small>Background by Hweehweemalu — Wikimedia Commons</small>
+  </div>
+
+<script>
+  let timeLeft = 1500;
+  let timerInterval = null;
+  let running = false;
+
+  function setMode(mode) {
+    document.querySelectorAll('.mode-select button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if (mode === 'pomodoro') timeLeft = 1500;
+    if (mode === 'short') timeLeft = 300;
+    if (mode === 'long') timeLeft = 900;
+
+    updateDisplay();
+    stopTimer();
+  }
+
+  function updateDisplay() {
+    let m = Math.floor(timeLeft / 60);
+    let s = timeLeft % 60;
+    document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  }
+
+  function toggleTimer() {
+    if (!running) startTimer();
+    else stopTimer();
+  }
+
+  function startTimer() {
+    running = true;
+    document.getElementById('startBtn').textContent = "PAUSE";
+
+    timerInterval = setInterval(() => {
+      if (timeLeft > 0) {
+        timeLeft--;
+        updateDisplay();
+      } else stopTimer();
+    }, 1000);
+  }
+
+  function stopTimer() {
+    running = false;
+    document.getElementById('startBtn').textContent = "START";
+    clearInterval(timerInterval);
+  }
+</script>
+</body>
+</html>
 
