@@ -1,281 +1,532 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQHBPN8S7Y"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>cozypomodoro.github.io</title>
 
-  gtag('config', 'G-LQHBPN8S7Y');
-</script>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Cozy Pomodoro - Centered</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --glass: rgba(255,255,255,0.06);
-    --glass-strong: rgba(255,255,255,0.10);
-    --accent: linear-gradient(145deg,#5e5e5e,#2b2b2b);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    font-family:'Poppins',sans-serif;
-    background: url('Kaohsiung_city_Skyline_at_night.jpg') no-repeat center center fixed;
-    background-size:cover;
-    color:white;
-    min-height:100vh;
-    overflow-x:hidden;
-  }
-  /* lighter overlay blur */
-  .overlay{
-    position:fixed;inset:0;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(3px);
-    z-index:0;
-  }
-  .page{
-    position:relative;z-index:1;
-    display:flex;
-    gap:40px;
-    align-items:center;
-    justify-content:center;
-    padding:60px;
-    min-height:100vh;
-  }
-  /* left (main) column */
-  .main-col{
-    width:60%;
-    max-width:800px;
-    min-width:320px;
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-    align-items:center;
-  }
-  /* right (spotify) column */
-  .side-col{
-    width:30%;
-    min-width:220px;
-    max-width:320px;
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-    align-items:stretch;
-  }
-  /* glass panels */
-  .panel{
-    width:100%;
-    background:var(--glass);
-    backdrop-filter: blur(10px) saturate(120%);
-    border-radius:14px;
-    padding:24px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.45);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:12px;
-  }
-  /* big timer */
-  #time{
-    font-size:5rem;
-    letter-spacing:1px;
-    font-weight:600;
-  }
-  /* controls row */
-  .controls{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-  /* 3D buttons */
-  .btn{
-    padding:10px 16px;
-    border-radius:10px;
-    border:none;
-    cursor:pointer;
-    color:white;
-    background: var(--accent);
-    box-shadow: 0 8px 0 rgba(20,20,20,0.7), 0 16px 30px rgba(0,0,0,0.5);
-    transform: translateY(0);
-    transition: transform .12s ease, box-shadow .12s ease;
-    font-weight:600;
-  }
-  .btn:active{ transform: translateY(6px); box-shadow: 0 2px 0 rgba(20,20,20,0.8) }
-  .btn.ghost{ background: rgba(255,255,255,0.08); box-shadow: 0 6px 0 rgba(10,10,10,0.6); }
-  /* to-do styles */
-  .todo-panel .todo-input{ display:flex; gap:10px; width:100%; }
-  .todo-panel input[type="text"]{ flex:1;padding:10px;border-radius:8px;border:none;background:rgba(255,255,255,0.06);color:white }
-  .todo-list{ width:100%; margin-top:8px; display:flex;flex-direction:column; gap:8px; align-items:stretch }
-  .todo-item{ display:flex; align-items:center; justify-content:space-between; gap:10px;
-    padding:8px 10px; border-radius:8px; background: rgba(255,255,255,0.04); }
-  .todo-item label{ flex:1; cursor:pointer }
-  .todo-item input[type="checkbox"]{ width:18px;height:18px }
-  /* spotify small panel */
-  .spotify-panel{ padding:12px }
-  .spotify-panel iframe{ width:100%; height:320px; border-radius:10px; border:0; }
-  /* explanation below fold (plain text) */
-  .explanation{ margin-top:120vh; padding:60px 20px; color:#f1f1f1; text-align:center; max-width:900px; margin-left:auto; margin-right:auto }
-  @media (max-width:920px){
-    .page{ flex-direction:column; padding:32px }
-    .main-col{ width:100% }
-    .side-col{ width:100%; order:2 }
-    .explanation{ margin-top:20px }
-    #time{ font-size:3.2rem }
-    .spotify-panel iframe{ height:240px }
-  }
-</style>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --glass-bg: rgba(255,255,255,0.12);
+      --accent: #2f6b9a;
+      --white-tint: rgba(255,255,255,0.18);
+      --button-shadow: 0 8px 0 rgba(0,0,0,0.35), 0 12px 30px rgba(0,0,0,0.25);
+      --inset-shadow: inset 0 -6px 0 rgba(0,0,0,0.18);
+      --soft-radius: 18px;
+    }
+
+    /* ========== BACKGROUND ==========
+       Put your background image in the same folder as this file and name it "background.jpg"
+       OR change the URL below to the file name you use.
+    */
+    html,body{
+      height:100%;
+      margin:0;
+    }
+    body{
+      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #fff;
+      background: url('background.jpg') center center / cover no-repeat fixed;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* subtle overlay to tint and blur background */
+    .bg-overlay{
+      position:fixed;
+      inset:0;
+      background: rgba(8,8,12,0.25);
+      backdrop-filter: blur(6px) saturate(1.05);
+      z-index:0;
+    }
+
+    .page{
+      position:relative;
+      z-index:5;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:28px;
+      padding:36px 24px;
+      box-sizing:border-box;
+    }
+
+    /* header/title */
+    .title{
+      font-family: "Great Vibes", cursive;
+      font-size:44px;
+      letter-spacing:1px;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      margin-top:6px;
+      color: #fff;
+    }
+
+    /* main layout block - center large widget and bottom row */
+    .center-wrap{
+      width:100%;
+      max-width:1200px;
+      display:flex;
+      flex-direction:column;
+      gap:26px;
+      align-items:center;
+    }
+
+    /* the large glass widget for timer */
+    .widget{
+      width:100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.06));
+      border-radius: var(--soft-radius);
+      padding:28px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* timer header buttons (Pomodoro/short/long) */
+    .modes{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-bottom:18px;
+    }
+
+    .mode-btn{
+      background: linear-gradient(#3a3a3a,#2e2e2e);
+      color:#fff;
+      padding:9px 18px;
+      border-radius:12px;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: var(--button-shadow);
+      transform: translateY(0);
+      transition: transform .08s ease, box-shadow .12s ease, background .12s;
+      letter-spacing:0.2px;
+    }
+    .mode-btn:active{ transform: translateY(2px); box-shadow: 0 4px 8px rgba(0,0,0,0.45); }
+    .mode-btn.active{
+      background: linear-gradient(#f6f6f6,#e9eef6);
+      color:#1a2a3a;
+      box-shadow: 0 10px 0 rgba(0,0,0,0.18), 0 18px 30px rgba(0,0,0,0.2);
+    }
+
+    /* large timer digits */
+    .timer{
+      text-align:center;
+      font-weight:800;
+      font-size:92px;
+      margin:6px 0 18px 0;
+      color: #fff;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.55);
+    }
+
+    .controls{
+      display:flex;
+      justify-content:center;
+      gap:16px;
+      margin-bottom:6px;
+    }
+
+    .control{
+      background: linear-gradient(#3a3a3a,#2e2e2e);
+      color:#fff;
+      padding:12px 28px;
+      border-radius:12px;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: var(--button-shadow);
+      font-size:16px;
+    }
+    .control:active{ transform: translateY(2px); box-shadow: 0 6px 12px rgba(0,0,0,0.45); }
+
+    .control.secondary{
+      background: linear-gradient(#4a4a4a,#3a3a3a);
+      padding:10px 20px;
+      font-weight:600;
+    }
+
+    /* layout for bottom row (todo + playlist) */
+    .bottom-row{
+      display:flex;
+      gap:26px;
+      width:100%;
+      max-width:1200px;
+      justify-content:space-between;
+      box-sizing:border-box;
+    }
+    .col{
+      flex:1;
+      min-width:260px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      border-radius: var(--soft-radius);
+      padding:18px;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.32);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* To-do list */
+    .todo-input-row{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+      align-items:center;
+    }
+    .todo-input{
+      flex:1;
+      padding:10px 12px;
+      border-radius:8px;
+      border:none;
+      outline:none;
+      font-size:15px;
+      background: rgba(255,255,255,0.06);
+      color:#fff;
+    }
+    .todo-add{
+      background:linear-gradient(#3a3a3a,#2e2e2e);
+      border:none;
+      padding:9px 14px;
+      border-radius:8px;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: var(--button-shadow);
+    }
+
+    ul.tasks{
+      list-style:none;
+      padding-left:0;
+      margin-top:14px;
+      max-height:260px;
+      overflow:auto;
+    }
+    ul.tasks li{
+      padding:10px 12px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.03);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+      font-size:15px;
+    }
+    .task-done{ text-decoration: line-through; opacity:0.6; }
+
+    .small-btn{
+      background: rgba(255,255,255,0.06);
+      border:none;
+      padding:6px 10px;
+      border-radius:8px;
+      cursor:pointer;
+      color:#fff;
+      font-weight:700;
+      box-shadow: 0 6px 10px rgba(0,0,0,0.28);
+    }
+
+    /* Playlist box - embed */
+    .playlist-embed{
+      width:100%;
+      border-radius:12px;
+      overflow:hidden;
+      margin-top:12px;
+      border: 1px solid rgba(0,0,0,0.2);
+    }
+
+    /* responsiveness */
+    @media (max-width:980px){
+      .bottom-row{ flex-direction:column; align-items:stretch; }
+      .center-wrap{ padding:10px 6px; }
+      .timer{ font-size:64px; }
+    }
+
+    /* whitespace & breathing room */
+    .spacer{ height:10px; }
+    /* footer note (small) */
+    .note{
+      margin-top:6px;
+      color: rgba(255,255,255,0.7);
+      font-size:12px;
+      text-align:center;
+    }
+  </style>
 </head>
 <body>
-  <div class="overlay"></div>
+
+  <div class="bg-overlay"></div>
+
   <div class="page">
-    <div class="main-col">
-      <div class="panel timer-panel">
-        <div id="time">25:00</div>
+    <div class="title">cozypomodoro.github.io</div>
+
+    <div class="center-wrap">
+
+      <!-- TIMER WIDGET -->
+      <div class="widget" id="timerWidget" aria-label="Pomodoro Timer">
+        <div class="modes" role="tablist">
+          <button class="mode-btn active" id="mode-pomodoro" data-mode="pomodoro">Pomodoro</button>
+          <button class="mode-btn" id="mode-short" data-mode="short">Short Break</button>
+          <button class="mode-btn" id="mode-long" data-mode="long">Long Break</button>
+        </div>
+
+        <div id="timeDisplay" class="timer">25:00</div>
+
         <div class="controls">
-          <button class="btn" id="pomodoroBtn">Pomodoro</button>
-          <button class="btn" id="shortBtn">Short Break</button>
-          <button class="btn" id="longBtn">Long Break</button>
-          <button class="btn ghost" id="startBtn">Start</button>
-          <button class="btn ghost" id="pauseBtn">Pause</button>
-          <button class="btn ghost" id="resetBtn">Reset</button>
+          <button class="control" id="startBtn">Start</button>
+          <button class="control secondary" id="pauseBtn">Pause</button>
+          <button class="control secondary" id="resetBtn">Reset</button>
         </div>
+
+        <div class="note">Tip: click a mode to switch times, then Start. Timers persist while the page is open.</div>
       </div>
 
-      <div class="panel todo-panel">
-        <h3 style="margin-bottom:6px">To‑Do</h3>
-        <div class="todo-input">
-          <input id="todoInput" placeholder="Add a task..." />
-          <button class="btn" id="addBtn">Add</button>
+      <!-- BOTTOM ROW: TODO + PLAYLIST -->
+      <div class="bottom-row">
+
+        <!-- TODO -->
+        <div class="col" id="todoCol" aria-label="To-Do">
+          <h3 style="margin:0 0 6px 0; font-weight:700;">To-Do</h3>
+          <div style="color:rgba(255,255,255,0.75); font-size:13px; margin-bottom:8px;">
+            Add tasks that you can check off during your session.
+          </div>
+
+          <div class="todo-input-row">
+            <input id="taskInput" class="todo-input" placeholder="Add a task..." />
+            <button id="addTask" class="todo-add">Add</button>
+          </div>
+
+          <ul id="tasks" class="tasks" aria-live="polite"></ul>
         </div>
-        <div class="todo-list" id="todoList"></div>
+
+        <!-- SPOTIFY PLAYLIST -->
+        <div class="col" id="playlistCol" aria-label="Playlist">
+          <h3 style="margin:0 0 6px 0; font-weight:700;">Lofi Playlist</h3>
+          <div style="color:rgba(255,255,255,0.75); font-size:13px; margin-bottom:8px;">
+            Embedded Spotify playlist. If you want longer mixes, replace the playlist ID below with a playlist that contains long mixes.
+          </div>
+
+          <div class="playlist-embed" id="spotifyFrameWrap">
+            <!--
+              To change the playlist: edit the playlist id in the src URL below.
+              Example Spotify embed format:
+              https://open.spotify.com/embed/playlist/PLAYLIST_ID
+            -->
+            <iframe id="spotifyEmbed"
+              src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4sWSpwq3LiO?utm_source=generator"
+              width="100%" height="380" frameborder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"></iframe>
+          </div>
+
+        </div>
       </div>
     </div>
 
-    <div class="side-col">
-      <div class="panel spotify-panel">
-        <h4 style="margin-bottom:8px">Lofi Playlist</h4>
-        <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX9RwfGbeGQwP?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      </div>
-    </div>
+    <div style="height:20px"></div>
   </div>
 
-  <div class="explanation">
-    <p>The Pomodoro Technique is a time management method developed by Francesco Cirillo. It uses a timer to break work into intervals, traditionally 25 minutes in length, separated by short breaks. Each interval is known as a "pomodoro".</p>
-  </div>
+  <!-- ================== JAVASCRIPT: TIMER + TODO ================== -->
+  <script>
+    /******************************
+     * Pomodoro Timer
+     * Modes:
+     *  - pomodoro: 25:00
+     *  - short: 5:00
+     *  - long: 15:00
+     ******************************/
+    const modes = {
+      pomodoro: 25 * 60,
+      short: 5 * 60,
+      long: 15 * 60
+    };
 
-<script>
-// Timer logic with modes and pause/resume
-const display = document.getElementById('time');
-const pomodoroBtn = document.getElementById('pomodoroBtn');
-const shortBtn = document.getElementById('shortBtn');
-const longBtn = document.getElementById('longBtn');
-const startBtn = document.getElementById('startBtn');
-const pauseBtn = document.getElementById('pauseBtn');
-const resetBtn = document.getElementById('resetBtn');
+    // State
+    let currentMode = 'pomodoro';
+    let remaining = modes[currentMode];
+    let timerInterval = null;
+    let running = false;
 
-const MODES = { pomodoro: 25*60, short: 5*60, long: 15*60 };
-let currentMode = 'pomodoro';
-let timeLeft = MODES[currentMode];
-let intervalId = null;
-let paused = false;
+    // Elements
+    const display = document.getElementById('timeDisplay');
+    const modeButtons = document.querySelectorAll('.mode-btn');
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resetBtn = document.getElementById('resetBtn');
 
-function fmt(t){
-  const m = Math.floor(t/60).toString().padStart(2,'0');
-  const s = (t%60).toString().padStart(2,'0');
-  return `${m}:${s}`;
-}
-
-function render(){
-  display.textContent = fmt(timeLeft);
-}
-
-function setMode(mode){
-  currentMode = mode;
-  timeLeft = MODES[mode];
-  paused = false;
-  clearInterval(intervalId);
-  intervalId = null;
-  render();
-}
-
-pomodoroBtn.onclick = ()=> setMode('pomodoro');
-shortBtn.onclick = ()=> setMode('short');
-longBtn.onclick = ()=> setMode('long');
-
-startBtn.onclick = ()=>{
-  if (intervalId) return;
-  paused = false;
-  pauseBtn.textContent = 'Pause';
-  intervalId = setInterval(()=>{
-    if (!paused && timeLeft>0){
-      timeLeft--;
-      render();
-      if (timeLeft<=0){
-        clearInterval(intervalId);
-        intervalId = null;
-        // simple alert end
-        alert('Time finished!');
-      }
+    // Helper to format time
+    function formatTime(s){
+      const m = Math.floor(s/60).toString().padStart(2,'0');
+      const sec = (s % 60).toString().padStart(2,'0');
+      return `${m}:${sec}`;
     }
-  },1000);
-};
 
-pauseBtn.onclick = ()=>{
-  if (!intervalId) return;
-  paused = !paused;
-  pauseBtn.textContent = paused ? 'Resume' : 'Pause';
-};
+    // render
+    function render(){
+      display.textContent = formatTime(remaining);
+    }
 
-resetBtn.onclick = ()=>{
-  clearInterval(intervalId);
-  intervalId = null;
-  timeLeft = MODES[currentMode];
-  paused = false;
-  pauseBtn.textContent = 'Pause';
-  render();
-};
+    // setMode
+    function setMode(mode){
+      if(!modes[mode]) return;
+      currentMode = mode;
+      remaining = modes[mode];
+      modeButtons.forEach(b=>{
+        b.classList.toggle('active', b.dataset.mode === mode);
+      });
+      stopTimer(); // stop when switching so user can start fresh
+      render();
+    }
 
-render();
+    // tick
+    function tick(){
+      if(remaining <= 0){
+        stopTimer();
+        // small visual feedback
+        document.getElementById('timerWidget').animate([{transform:'scale(1)'},{transform:'scale(1.02)'}], {duration:220, easing:'ease-out'});
+        return;
+      }
+      remaining--;
+      render();
+    }
 
-// To-do with localStorage
-const todoInput = document.getElementById('todoInput');
-const addBtn = document.getElementById('addBtn');
-const todoList = document.getElementById('todoList');
-let todos = JSON.parse(localStorage.getItem('cp_todos') || '[]');
+    function startTimer(){
+      if(running) return;
+      running = true;
+      timerInterval = setInterval(tick, 1000);
+    }
+    function pauseTimer(){
+      running = false;
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    function resetTimer(){
+      remaining = modes[currentMode];
+      pauseTimer();
+      render();
+    }
+    function stopTimer(){
+      running = false;
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+    }
 
-function saveTodos(){ localStorage.setItem('cp_todos', JSON.stringify(todos)); }
-function renderTodos(){
-  todoList.innerHTML = '';
-  todos.forEach((t,i)=>{
-    const div = document.createElement('div');
-    div.className = 'todo-item';
-    div.innerHTML = `<label><input type="checkbox" data-i="${i}"> ${t}</label>`;
-    todoList.appendChild(div);
-  });
-}
-addBtn.onclick = ()=>{
-  const v = todoInput.value.trim();
-  if (!v) return;
-  todos.push(v);
-  todoInput.value='';
-  saveTodos();
-  renderTodos();
-};
-todoList.addEventListener('change', (e)=>{
-  if (e.target.matches('input[type="checkbox"]')){
-    const i = Number(e.target.getAttribute('data-i'));
-    todos.splice(i,1);
-    saveTodos();
-    renderTodos();
-  }
-});
-renderTodos();
-</script>
+    // Hook up events
+    modeButtons.forEach(b=>{
+      b.addEventListener('click', ()=> setMode(b.dataset.mode));
+    });
+    startBtn.addEventListener('click', startTimer);
+    pauseBtn.addEventListener('click', pauseTimer);
+    resetBtn.addEventListener('click', resetTimer);
+
+    // initial render
+    render();
+
+    /******************************
+     * TODO LIST + localStorage
+     ******************************/
+    const input = document.getElementById('taskInput');
+    const addBtn = document.getElementById('addTask');
+    const tasksUL = document.getElementById('tasks');
+
+    // storage key
+    const STORAGE_KEY = 'cozy_pomodoro_tasks_v1';
+
+    function loadTasks(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return [];
+        return JSON.parse(raw);
+      }catch(e){ return []; }
+    }
+    function saveTasks(tasks){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+
+    function renderTasks(){
+      const tasks = loadTasks();
+      tasksUL.innerHTML = '';
+      tasks.forEach((t, idx)=>{
+        const li = document.createElement('li');
+        const left = document.createElement('div');
+        left.style.display = 'flex';
+        left.style.gap = '12px';
+        left.style.alignItems = 'center';
+
+        const chk = document.createElement('input');
+        chk.type = 'checkbox';
+        chk.checked = t.done || false;
+        chk.addEventListener('change', ()=>{
+          tasks[idx].done = chk.checked;
+          saveTasks(tasks);
+          renderTasks();
+        });
+
+        const span = document.createElement('span');
+        span.textContent = t.text;
+        if(t.done) span.classList.add('task-done');
+
+        left.appendChild(chk);
+        left.appendChild(span);
+
+        const buttons = document.createElement('div');
+        buttons.style.display='flex';
+        buttons.style.gap='8px';
+
+        const del = document.createElement('button');
+        del.textContent = 'Delete';
+        del.className = 'small-btn';
+        del.addEventListener('click', ()=>{
+          tasks.splice(idx,1);
+          saveTasks(tasks);
+          renderTasks();
+        });
+
+        buttons.appendChild(del);
+
+        li.appendChild(left);
+        li.appendChild(buttons);
+        tasksUL.appendChild(li);
+      });
+    }
+
+    addBtn.addEventListener('click', ()=> {
+      const v = input.value.trim();
+      if(!v) return;
+      const tasks = loadTasks();
+      tasks.push({text:v, done:false, created:Date.now()});
+      saveTasks(tasks);
+      input.value = '';
+      renderTasks();
+    });
+
+    input.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') addBtn.click(); });
+
+    // initial load
+    renderTasks();
+
+    /******************************
+     * OPTIONAL: Remember current mode/time while page stays open
+     * (we intentionally do not persist running state across tab closes)
+     ******************************/
+    // nothing else required here for now
+
+    // Accessibility small improvement: keyboard shortcuts
+    document.addEventListener('keydown', (e)=>{
+      // space starts/pauses
+      if(e.code === 'Space'){
+        e.preventDefault();
+        if(running) pauseTimer(); else startTimer();
+      }
+      // R resets
+      if(e.key.toLowerCase() === 'r'){ resetTimer(); }
+    });
+  </script>
+
 </body>
 </html>
+
