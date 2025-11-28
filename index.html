@@ -6,17 +6,16 @@
 <title>Cozy Pomodoro</title>
 
 <style>
-/* RESET */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: Arial, sans-serif;
   background: url('Kaohsiung_city_Skyline_at_night.jpg') center/cover fixed no-repeat;
   color: white;
-  height: 200vh; /* lets user scroll to reveal footer */
+  min-height: 100vh;
 }
 
-/* Title */
+/* Block title */
 header {
   padding: 25px;
   font-size: 38px;
@@ -27,10 +26,10 @@ header {
   display: inline-block;
   border-radius: 14px;
   margin-left: 25px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  margin-top: 20px;
 }
 
-/* Layout */
+/* SECTION WITH WIDGETS */
 .main-area {
   display: flex;
   justify-content: center;
@@ -39,7 +38,6 @@ header {
   margin-top: 20px;
 }
 
-/* Widget card */
 .widget {
   width: 320px;
   padding: 22px;
@@ -50,8 +48,7 @@ header {
   box-shadow: 0 6px 14px rgba(0,0,0,0.35);
 }
 
-/* ---------- TIMER ---------- */
-
+/* TIMER WIDGET */
 .mode-select button {
   background: transparent;
   border: none;
@@ -63,18 +60,14 @@ header {
   cursor: pointer;
   transition: 0.2s;
 }
-
 .mode-select .active {
   background: rgba(255,255,255,0.25);
-  color: white;
 }
-
 .timer-display {
   font-size: 64px;
   font-weight: 700;
   margin: 25px 0;
 }
-
 .start-btn {
   background: white;
   border: none;
@@ -84,10 +77,10 @@ header {
   color: #b14c4c;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  margin-top: 10px;
 }
 
-/* ---------- TODO LIST ---------- */
+/* TODO LIST */
 #todoInput {
   width: 80%;
   padding: 10px;
@@ -95,7 +88,6 @@ header {
   border: none;
   margin-bottom: 12px;
 }
-
 #addTaskBtn {
   padding: 10px 14px;
   border-radius: 8px;
@@ -105,13 +97,11 @@ header {
   color: #222;
   font-weight: bold;
 }
-
 ul {
   list-style: none;
   margin-top: 20px;
   text-align: left;
 }
-
 li {
   margin-bottom: 8px;
   padding: 6px;
@@ -121,7 +111,6 @@ li {
   justify-content: space-between;
   align-items: center;
 }
-
 li button {
   background: rgba(255,255,255,0.5);
   border: none;
@@ -130,29 +119,18 @@ li button {
   cursor: pointer;
 }
 
-/* ---------- FOOTER ---------- */
+/* FOOTER SECTION (only visible when scrolling) */
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 45vh;
+  margin-top: 80px;
   background: black;
-  padding: 40px;
+  padding: 50px;
   color: #eee;
   font-size: 18px;
-}
-
-.footer-content {
-  opacity: 0;
-  transition: opacity 1s ease;
-  margin-top: 40px;
-}
-
-body:has(.footer:hover) .footer-content {
-  opacity: 1;
+  text-align: center;
 }
 </style>
 </head>
+
 <body>
 
 <header>COZYPOMODORO</header>
@@ -172,7 +150,7 @@ body:has(.footer:hover) .footer-content {
     <button class="start-btn" id="startBtn" onclick="toggleTimer()">START</button>
   </div>
 
-  <!-- TODO LIST WIDGET -->
+  <!-- TODO WIDGET -->
   <div class="widget">
     <h2>To-Do</h2>
     <input id="todoInput" type="text" placeholder="Add a task...">
@@ -183,25 +161,24 @@ body:has(.footer:hover) .footer-content {
   <!-- SPOTIFY WIDGET -->
   <div class="widget">
     <h2>Lofi Playlist</h2>
-    <iframe style="border-radius:12px; margin-top: 15px;"
-      src="https://open.spotify.com/embed/playlist/37i9dQZF1DXdPDxnO9cp0k?utm_source=generator&theme=0"
-      width="100%" height="380" frameBorder="0" allowfullscreen=""
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+    <iframe 
+      style="border-radius:12px; margin-top: 15px; background:white;"
+      src="https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator&theme=1"
+      width="100%" height="380" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media">
     </iframe>
   </div>
 
 </div>
 
-<!-- FOOTER (hidden until scroll into black) -->
+<!-- FOOTER SECTION (scroll down to see) -->
 <div class="footer">
-  <div class="footer-content">
-    <p>The Pomodoro Technique is a productivity method where you work in 25-minute focused intervals and take small breaks.</p>
-    <small>Background by Hweehweemalu — Wikimedia Commons</small>
-  </div>
+  The Pomodoro Technique is a productivity method where you work in 25-minute focused intervals and take small breaks.<br>
+  <small>Background by Hweehweemalu — Wikimedia Commons</small>
 </div>
 
+
 <script>
-/* ---------- TIMER LOGIC ---------- */
+/* TIMER SCRIPT */
 let timeLeft = 1500;
 let running = false;
 let timerInterval;
@@ -221,7 +198,8 @@ function setMode(mode, btn) {
 function updateTimerDisplay() {
   let m = Math.floor(timeLeft / 60);
   let s = timeLeft % 60;
-  document.getElementById("timer").textContent = `${m}:${s.toString().padStart(2,"0")}`;
+  document.getElementById("timer").textContent =
+    `${m}:${s.toString().padStart(2, "0")}`;
 }
 
 function toggleTimer() {
@@ -247,7 +225,7 @@ function stopTimer() {
   document.getElementById("startBtn").textContent = "START";
 }
 
-/* ---------- TODO LIST ---------- */
+/* TODO LIST SCRIPT */
 function addTask() {
   let input = document.getElementById("todoInput");
   if (input.value.trim() === "") return;
@@ -262,8 +240,10 @@ function addTask() {
   input.value = "";
 }
 </script>
+
 </body>
 </html>
+
 
 
 
