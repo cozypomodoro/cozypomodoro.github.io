@@ -1,168 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cozy Pomodoro</title>
-  <style>
-    /* RESET */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: url('Kaohsiung_city_Skyline_at_night.jpg') center/cover fixed no-repeat;
-      color: white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozy Pomodoro</title>
 
-    header {
-      padding: 20px;
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+<style>
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 30px;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background: url('Kaohsiung_city_Skyline_at_night.jpg') center/cover fixed no-repeat;
+  color: white;
+  height: 200vh; /* lets user scroll to reveal footer */
+}
 
-    .widget {
-      width: 300px;
-      backdrop-filter: blur(6px);
-      background: rgba(0,0,0,0.25);
-      border-radius: 20px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
+/* Title */
+header {
+  padding: 25px;
+  font-size: 38px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: rgba(0,0,0,0.35);
+  display: inline-block;
+  border-radius: 14px;
+  margin-left: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
 
-    /* Pomodoro top buttons */
-    .mode-select button {
-      background: transparent;
-      border: none;
-      color: #ffdada;
-      font-size: 16px;
-      padding: 5px 12px;
-      margin: 0 4px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .mode-select .active {
-      background: rgba(255,255,255,0.2);
-      color: white;
-    }
+/* Layout */
+.main-area {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px;
+  margin-top: 20px;
+}
 
-    /* Timer number */
-    .timer-display {
-      font-size: 60px;
-      margin: 20px 0;
-    }
+/* Widget card */
+.widget {
+  width: 320px;
+  padding: 22px;
+  border-radius: 22px;
+  background: rgba(0,0,0,0.22);
+  backdrop-filter: blur(4px);
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
 
-    /* Big START Button */
-    .start-btn {
-      background: white;
-      color: #b14c4c;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 22px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-    }
+/* ---------- TIMER ---------- */
 
-    /* Content at bottom */
-    .footer-text {
-      margin-top: 80px;
-      padding: 20px;
-      font-size: 16px;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(5px);
-    }
+.mode-select button {
+  background: transparent;
+  border: none;
+  color: #ffdada;
+  font-size: 16px;
+  padding: 5px 12px;
+  margin: 0 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-    small {
-      display: block;
-      margin-top: 5px;
-      font-size: 13px;
-      color: #f0f0f0;
-    }
-  </style>
+.mode-select .active {
+  background: rgba(255,255,255,0.25);
+  color: white;
+}
+
+.timer-display {
+  font-size: 64px;
+  font-weight: 700;
+  margin: 25px 0;
+}
+
+.start-btn {
+  background: white;
+  border: none;
+  padding: 14px 30px;
+  font-size: 22px;
+  border-radius: 12px;
+  color: #b14c4c;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+}
+
+/* ---------- TODO LIST ---------- */
+#todoInput {
+  width: 80%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 12px;
+}
+
+#addTaskBtn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: white;
+  color: #222;
+  font-weight: bold;
+}
+
+ul {
+  list-style: none;
+  margin-top: 20px;
+  text-align: left;
+}
+
+li {
+  margin-bottom: 8px;
+  padding: 6px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li button {
+  background: rgba(255,255,255,0.5);
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 45vh;
+  background: black;
+  padding: 40px;
+  color: #eee;
+  font-size: 18px;
+}
+
+.footer-content {
+  opacity: 0;
+  transition: opacity 1s ease;
+  margin-top: 40px;
+}
+
+body:has(.footer:hover) .footer-content {
+  opacity: 1;
+}
+</style>
 </head>
 <body>
-  <header>CozyPomodoro</header>
 
-  <div class="container">
-    <div class="widget">
-      <div class="mode-select">
-        <button class="active" onclick="setMode('pomodoro')">Pomodoro</button>
-        <button onclick="setMode('short')">Short Break</button>
-        <button onclick="setMode('long')">Long Break</button>
-      </div>
+<header>COZYPOMODORO</header>
 
-      <div class="timer-display" id="timer">25:00</div>
+<div class="main-area">
 
-      <button class="start-btn" onclick="toggleTimer()" id="startBtn">START</button>
+  <!-- TIMER WIDGET -->
+  <div class="widget">
+    <div class="mode-select">
+      <button class="active" onclick="setMode('pomodoro', this)">Pomodoro</button>
+      <button onclick="setMode('short', this)">Short Break</button>
+      <button onclick="setMode('long', this)">Long Break</button>
     </div>
 
-    <div class="widget">Widget 2</div>
-    <div class="widget">Widget 3</div>
+    <div class="timer-display" id="timer">25:00</div>
+
+    <button class="start-btn" id="startBtn" onclick="toggleTimer()">START</button>
   </div>
 
-  <div class="footer-text">
-    The Pomodoro Technique is a simple productivity system where you work in focused intervals and take small breaks.
+  <!-- TODO LIST WIDGET -->
+  <div class="widget">
+    <h2>To-Do</h2>
+    <input id="todoInput" type="text" placeholder="Add a task...">
+    <button id="addTaskBtn" onclick="addTask()">Add</button>
+    <ul id="todoList"></ul>
+  </div>
+
+  <!-- SPOTIFY WIDGET -->
+  <div class="widget">
+    <h2>Lofi Playlist</h2>
+    <iframe style="border-radius:12px; margin-top: 15px;"
+      src="https://open.spotify.com/embed/playlist/37i9dQZF1DXdPDxnO9cp0k?utm_source=generator&theme=0"
+      width="100%" height="380" frameBorder="0" allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+    </iframe>
+  </div>
+
+</div>
+
+<!-- FOOTER (hidden until scroll into black) -->
+<div class="footer">
+  <div class="footer-content">
+    <p>The Pomodoro Technique is a productivity method where you work in 25-minute focused intervals and take small breaks.</p>
     <small>Background by Hweehweemalu — Wikimedia Commons</small>
   </div>
+</div>
 
 <script>
-  let timeLeft = 1500;
-  let timerInterval = null;
-  let running = false;
+/* ---------- TIMER LOGIC ---------- */
+let timeLeft = 1500;
+let running = false;
+let timerInterval;
 
-  function setMode(mode) {
-    document.querySelectorAll('.mode-select button').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
+function setMode(mode, btn) {
+  document.querySelectorAll('.mode-select button').forEach(el => el.classList.remove("active"));
+  btn.classList.add("active");
 
-    if (mode === 'pomodoro') timeLeft = 1500;
-    if (mode === 'short') timeLeft = 300;
-    if (mode === 'long') timeLeft = 900;
+  if (mode === 'pomodoro') timeLeft = 1500;
+  if (mode === 'short') timeLeft = 300;
+  if (mode === 'long') timeLeft = 900;
 
-    updateDisplay();
-    stopTimer();
-  }
+  stopTimer();
+  updateTimerDisplay();
+}
 
-  function updateDisplay() {
-    let m = Math.floor(timeLeft / 60);
-    let s = timeLeft % 60;
-    document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
-  }
+function updateTimerDisplay() {
+  let m = Math.floor(timeLeft / 60);
+  let s = timeLeft % 60;
+  document.getElementById("timer").textContent = `${m}:${s.toString().padStart(2,"0")}`;
+}
 
-  function toggleTimer() {
-    if (!running) startTimer();
-    else stopTimer();
-  }
+function toggleTimer() {
+  if (running) stopTimer();
+  else startTimer();
+}
 
-  function startTimer() {
-    running = true;
-    document.getElementById('startBtn').textContent = "PAUSE";
+function startTimer() {
+  running = true;
+  document.getElementById("startBtn").textContent = "PAUSE";
 
-    timerInterval = setInterval(() => {
-      if (timeLeft > 0) {
-        timeLeft--;
-        updateDisplay();
-      } else stopTimer();
-    }, 1000);
-  }
+  timerInterval = setInterval(() => {
+    if (timeLeft > 0) {
+      timeLeft--;
+      updateTimerDisplay();
+    } else stopTimer();
+  }, 1000);
+}
 
-  function stopTimer() {
-    running = false;
-    document.getElementById('startBtn').textContent = "START";
-    clearInterval(timerInterval);
-  }
+function stopTimer() {
+  running = false;
+  clearInterval(timerInterval);
+  document.getElementById("startBtn").textContent = "START";
+}
+
+/* ---------- TODO LIST ---------- */
+function addTask() {
+  let input = document.getElementById("todoInput");
+  if (input.value.trim() === "") return;
+
+  let li = document.createElement("li");
+  li.innerHTML = `
+    ${input.value}
+    <button onclick="this.parentElement.remove()">✕</button>
+  `;
+  document.getElementById("todoList").appendChild(li);
+
+  input.value = "";
+}
 </script>
 </body>
 </html>
+
 
 
